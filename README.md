@@ -21,6 +21,11 @@ For now, this is only a start. The goal is to build a node-based Automated Text 
 
 - Different tasks like browsing the web or executing code or image recognition
 
+something like this:
+
+![FsW_uXMaEAAWaX0](https://user-images.githubusercontent.com/66518617/230734768-6a1ed138-09d3-41d9-85cf-b4107cf00cbe.jpeg)
+https://github.com/yoheinakajima/babyagi
+
 # Installing
 Install: https://github.com/comfyanonymous/ComfyUI
 
