@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 
 output_dir = os.path.abspath("output_folder")
 server = "127.0.0.1"  # define the server address here
@@ -161,27 +162,29 @@ class TextGenerator:
         # Make request to API to generate text
         url = f"http://{server}:7860/run/textgen"
         headers = {"Content-Type": "application/json"}
-        data = {
-            "data": [
-                self.prompt_text,
-                self.max_new_tokens,
-                self.do_sample,
-                self.temperature,
-                self.top_p,
-                self.typical_p,
-                self.repetition_penalty,
-                self.encoder_repetition_penalty,
-                self.top_k,
-                self.min_length,
-                self.no_repeat_ngram_size,
-                self.num_beams,
-                self.penalty_alpha,
-                self.length_penalty,
-                self.early_stopping,
-                self.seed
-            ]
+        params = {
+            'max_new_tokens': self.max_new_tokens,
+            'do_sample': self.do_sample,
+            'temperature': self.temperature,
+            'top_p': self.top_p,
+            'typical_p': self.typical_p,
+            'repetition_penalty': self.repetition_penalty,
+            'encoder_repetition_penalty': self.encoder_repetition_penalty,
+            'top_k': self.top_k,
+            'min_length': self.min_length,
+            'no_repeat_ngram_size': self.no_repeat_ngram_size,
+            'num_beams': self.num_beams,
+            'penalty_alpha': self.penalty_alpha,
+            'length_penalty': self.length_penalty,
+            'early_stopping': self.early_stopping,
+            'seed': self.seed,
         }
-        response = requests.post(url, headers=headers, json=data)
+        payload = json.dumps([self.prompt_text, params])
+        response = requests.post(url, headers=headers, json={
+            "data": [
+                payload
+            ]
+        })
         
         # Check for errors in API response
         if response.status_code != 200:
@@ -198,8 +201,8 @@ class TextGenerator:
         generated_text = response_data[0]
         
         # Save generated text and return it
-        self.generated_text = generated_text
-        return ({"text": generated_text},)
+        self.generated_text = generated_text[len(self.prompt_text):len(generated_text)]
+        return ({"text": self.generated_text},)
 
 class TextCombine:
     @classmethod
