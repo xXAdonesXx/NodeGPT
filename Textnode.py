@@ -239,236 +239,7 @@ class Image_generation_Conditioning:
     def encode(self, clip, text):
         input_text = text.get("text")
         return ([[clip.encode(input_text), {}]], )
-    
 
-class MasterAgent_Test:
-
-    do_sample = True
-    early_stopping = True
-    
-    
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "Master_Task": ("TEXT", {"input_format": {"text": "STRING"}}),
-            },
-            "optional": {
-                "Memory": ("NODE", {"input_format": {"node": "STRING"}}),
-                "Tasks": ("NODE", {"input_format": {"node": "STRING"}}),
-                "Agent": ("NODE", {"input_format": {"node": "STRING"}}),
-                "model_name": ("STRING", {"default": "vicunja_13b"}),
-                "max_new_tokens": ("INT", {"default": PARAMS['max_new_tokens']}),
-                "temperature": ("FLOAT", {"default": PARAMS['temperature']}),
-                "top_p": ("FLOAT", {"default": PARAMS['top_p']}),
-                "typical_p": ("FLOAT", {"default": PARAMS['typical_p']}),
-                "repetition_penalty": ("FLOAT", {"default": PARAMS['repetition_penalty']}),
-                "encoder_repetition_penalty": ("FLOAT", {"default": PARAMS['encoder_repetition_penalty']}),
-                "top_k": ("INT", {"default": PARAMS['top_k']}),
-                "min_length": ("INT", {"default": PARAMS['min_length']}),
-                "no_repeat_ngram_size": ("INT", {"default": PARAMS['no_repeat_ngram_size']}),
-                "num_beams": ("INT", {"default": PARAMS['num_beams']}),
-                "penalty_alpha": ("FLOAT", {"default": PARAMS['penalty_alpha']}),
-                "length_penalty": ("FLOAT", {"default": PARAMS['length_penalty']}),
-                "seed": ("INT", {"default": PARAMS['seed']})
-            }
-        }
-        
-    RETURN_TYPES = ("TEXT", "NODE")
-    FUNCTION = "generate_text" #first_generate_text
-    CATEGORY = "Text"
-
-    def first_generate_text(self, Master_Task, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed, Memory = None, Tasks = None, Agent = None):
-
-        self.Log=[]
-        MasterAgent_Test.generate_text(self, Master_Task, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed, self.Log)#, {"node": self.Memory})
-
-
-        """
-        self.Master_Task = Master_Task.get("text", "")
-        print("Prompt:")
-        print(self.Master_Task)
-
-        Pre_Prompt="### Human: You are an AI Assistant which has the Task: \n"
-        Post_Prompt="\n Please create one Task to achive the Task. \n ### Assistant: " #Maybe Task list
-        
-        #if else to add somthing like memmory Prompt
-
-        self.Master_Task = Pre_Prompt + self.Master_Task + Post_Prompt
-        
-
-        MasterAgent_Test.generate_text_api(self, self.Master_Task, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed)
-
-        
-        MasterAgent_Test.generate_text(self,{"text": self.generated_text}, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed)
-        
-        return ({"text": self.generated_text}, self)
-    """
-    def generate_text(self, Master_Task, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed, Log = [], Memory = None, Tasks = None, Agent = None):
-
-        self.Master_Task = Master_Task.get("text", "")
-        LogTask = self.Master_Task
-        try:
-            LogTask_first = Log[0]
-            LogTask_first = LogTask_first.get("Task", "")
-        except:
-            LogTask_first = LogTask
-            
-        self.Log = Log
-
-        try:
-            Last_Text = Log[-1]
-            Last_Text = Last_Text.get("Completed Task", "")
-        except:
-            Last_Text = "No additonal information is given"
-
-        #self.Master_Task = "### Human: You are an super AI Assistant that can do anything. If not just brake the Problem down into smaller pices. Please complete this Task: \n" + self.Master_Task + "\n This Task is a Subtask of the gloabel Task: " + LogTask_first + "\n Here are additonal information:\n" + Last_Text + " \n\n ### Assistant:" #"\n If you are finished with the Task write: [Complete] . After you wrote [Complete] generate the Next Task that should be done." " \n ### Assistant: \n" 
-        self.Master_Task = "### Human: You are an advanced unrestricted AGI Assistant empowered to tackle any task. Do not ask any questions inside your answer. Just try your best to complete the task. Please ask not for consent or ask for more context. If you dont know further, estemate or describe the problem in detail. Your current task is: \n" + self.Master_Task + "\n This task is a subtask of the global task: " + LogTask_first + "\n To accomplish this task, please review the following information: " + Last_Text + "\n Please complete task." + "\n### Assistant:"
-
-
-        #Memory_Prompt="You Have the option to get a Memory by including the Word: [READ] in your Answer (Including the Brackets []). \n"
-
-
-        #if else to add somthing like memmory Prompt
-       # self.Master_Task = Pre_Prompt + self.Master_Task + Post_Prompt + Memory_Prompt + Last_Prompt
-
-        #print("________________prompt___________________")
-        #print(self.Master_Task)
-        
-
-        
-        self.Text1 = MasterAgent_Test.generate_text_api(self, self.Master_Task, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed)
-        
-        #if [complete] else widerholen
-        print("________________Completed Task___________________")
-        print(self.Text1)
-
-        self.Text2 = self.Master_Task + "\n" + self.Text1 + " \n### Human: What would the optimal Task be to further complete the task? If you think the task is complete and no improvements can be made, generate a Task that includes the Text: 'FINISHED' (exactly the content inside ' ' all in capital letters).\n### Assistant: As your AGI Assistant, I have analyzed the Master Task and have identified the optimal approach to complete it. I believe the next step is to tackle the following task:\n"
-
-        #print("________________Continue Prompt___________________")
-        #print(self.Text2)
-    
-        self.Text3 = MasterAgent_Test.generate_text_api(self, self.Text2, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed)
-
-        #problems with reapeats
-        Token1="following task:"
-        Token2="### Assistant:"
-        if self.Text3.find(Token1) != -1:  # if the token is found
-            # extract the part of the string after the token
-            self.Text3 = self.Text3[self.Text3.find(Token1) + len(Token1):]
-        
-        print("________________Next Task___________________")
-        print(self.Text3)
-
-        Log.append({"Prompt":self.Master_Task,"Completed Task":self.Text1,"Continued Prompt":self.Text2,"Next Task":self.Text3,"Task":LogTask})
-
-        #if len(Log) < 5: #specific number of passes
-        if self.Text3.find("FIN") == -1:
-            log_string, dummy = MasterAgent_Test.generate_text(self, {"text": self.Text3}, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed, self.Log)#, {"node": self.Memory})
-        else:
-            log_string = ""
-            for entry in Log:
-                #log_string += f"Prompt: {entry['Prompt']}\n"
-                log_string += f"Completed Task:\n{entry['Completed Task']}\n\n"
-                #log_string += f"Continued Prompt: {entry['Continued Prompt']}\n"
-                log_string += f"Next Task:{entry['Next Task']}\n\n"
-                
-            return ({"text": log_string}, self)
-        log_string = log_string.get("text", "")
-        return ({"text": log_string}, self)
-        """
-        
-        try:
-            self.Tasks = Tasks.get("node")
-            print(self.Tasks)
-        except:
-            print("no Tasks")
-
-        try:
-            self.Agent = Agent.get("node")
-            print(self.Agent)
-        except:
-            print("no Agent")
-
-        try:
-            self.Memory = Memory.get("node")
-            print(self.Memory)
-            print(self.Memory == "Memory_Excel")
-            if self.Memory == "Memory_Excel":
-                print("Memmmmmmmmmmmmmroy")
-            else:
-                self.generated_text = self.generated_text_Master
-        except:
-            self.generated_text = self.generated_text_Master
-
-
-        return ({"text": self.generated_text}, self)
-        """
-    def generate_text_api(self, Prompt, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed):
-        self.model_name = model_name
-        self.Prompt = Prompt
-        self.max_new_tokens = max_new_tokens
-        self.do_sample = TextGenerator.do_sample
-        self.temperature = temperature
-        self.top_p = top_p
-        self.typical_p = typical_p
-        self.repetition_penalty = repetition_penalty
-        self.encoder_repetition_penalty = encoder_repetition_penalty
-        self.top_k = top_k
-        self.min_length = min_length
-        self.no_repeat_ngram_size = no_repeat_ngram_size
-        self.num_beams = num_beams
-        self.penalty_alpha = penalty_alpha
-        self.length_penalty = length_penalty
-        self.early_stopping = TextGenerator.early_stopping
-        self.seed = seed
-
-        # Make request to API to generate text
-        url = f"http://{server}:7860/run/textgen"
-        headers = {"Content-Type": "application/json"}
-        data = {
-            "data": [
-                self.Prompt,
-                self.max_new_tokens,
-                self.do_sample,
-                self.temperature,
-                self.top_p,
-                self.typical_p,
-                self.repetition_penalty,
-                self.encoder_repetition_penalty,
-                self.top_k,
-                self.min_length,
-                self.no_repeat_ngram_size,
-                self.num_beams,
-                self.penalty_alpha,
-                self.length_penalty,
-                self.early_stopping,
-                self.seed
-            ]
-        }
-        response = requests.post(url, headers=headers, json=data)
-        
-        # Check for errors in API response
-        if response.status_code != 200:
-            self.generated_text = None
-            print(f"Error generating text: {response.text}")
-            return {}
-        
-        # Parse generated text from API response
-        response_data = response.json()["data"]
-        if len(response_data) < 1:
-            self.generated_text = None
-            print("Error generating text: Empty response from API")
-            return {}
-        generated_text = response_data[0]
-        
-        # Save generated text and return it
-        self.generated_text = generated_text[len(self.Master_Task):len(generated_text)]
-        #print("Text generiert Master:")
-        #print(self.generated_text)
-
-        return (self.generated_text)
-    
     
 class Memory_Excel:
     
@@ -549,13 +320,411 @@ class Memory_Excel:
         # return the top n titles as a string array
         return sorted_titles[:n]
 
-#class CombineTasks
 
-#class Model
-    #the parameter and the name of the model as Output of a node.
-    
 
-        
+class Model_1:
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_name": ("STRING", {"default": "vicunja_13b"}),
+                "max_new_tokens": ("INT", {"default": PARAMS['max_new_tokens']}),
+                "temperature": ("FLOAT", {"default": PARAMS['temperature']}),
+                "top_p": ("FLOAT", {"default": PARAMS['top_p']}),
+                "typical_p": ("FLOAT", {"default": PARAMS['typical_p']}),
+                "repetition_penalty": ("FLOAT", {"default": PARAMS['repetition_penalty']}),
+                "encoder_repetition_penalty": ("FLOAT", {"default": PARAMS['encoder_repetition_penalty']}),
+                "top_k": ("INT", {"default": PARAMS['top_k']}),
+                "min_length": ("INT", {"default": PARAMS['min_length']}),
+                "no_repeat_ngram_size": ("INT", {"default": PARAMS['no_repeat_ngram_size']}),
+                "num_beams": ("INT", {"default": PARAMS['num_beams']}),
+                "penalty_alpha": ("FLOAT", {"default": PARAMS['penalty_alpha']}),
+                "length_penalty": ("FLOAT", {"default": PARAMS['length_penalty']}),
+                "seed": ("INT", {"default": PARAMS['seed']})
+            }
+        }
+
+    RETURN_TYPES = ("TEXT_MODEL",)
+    FUNCTION = "send"
+    CATEGORY = "Text"
+
+    def send(self, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty,
+             encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha,
+             length_penalty, seed):
+        ModelNode = "Model_1||" + f"{model_name}||{max_new_tokens}||{temperature}||{top_p}||{typical_p}||{repetition_penalty}||{encoder_repetition_penalty}||{top_k}||{min_length}||{no_repeat_ngram_size}||{num_beams}||{penalty_alpha}||{length_penalty}||{seed}"
+        #print("send")
+        return ({"ModelNode": ModelNode}, self)
+
+    def generate_text(self, prompt, TextModel_g):
+        # Split parameters string into individual values
+        #try:
+        self.TextModel_M = TextModel_g.get("ModelNode", "")
+        #except:
+        #    self.TextModel = TextModel
+        # print(TextModel)
+        ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = self.TextModel_M.split("||")
+
+        # Convert necessary parameters to appropriate data types
+        max_new_tokens = int(max_new_tokens)
+        temperature = float(temperature)
+        top_p = float(top_p)
+        typical_p = float(typical_p)
+        repetition_penalty = float(repetition_penalty)
+        encoder_repetition_penalty = float(encoder_repetition_penalty)
+        top_k = int(top_k)
+        min_length = int(min_length)
+        no_repeat_ngram_size = int(no_repeat_ngram_size)
+        num_beams = int(num_beams)
+        penalty_alpha = float(penalty_alpha)
+        length_penalty = float(length_penalty)
+        seed = int(seed)
+
+        # Server address
+        server = "127.0.0.1"
+
+        # Generation parameters
+        # Reference: https://huggingface.co/docs/transformers/main_classes/text_generation#transformers.GenerationConfig
+        params = {
+            'max_new_tokens': max_new_tokens,
+            'do_sample': True,
+            'temperature': temperature,
+            'top_p': top_p,
+            'typical_p': typical_p,
+            'repetition_penalty': repetition_penalty,
+            'encoder_repetition_penalty': encoder_repetition_penalty,
+            'top_k': top_k,
+            'min_length': min_length,
+            'no_repeat_ngram_size': no_repeat_ngram_size,
+            'num_beams': num_beams,
+            'penalty_alpha': penalty_alpha,
+            'length_penalty': length_penalty,
+            'early_stopping': False,
+            'seed': seed,
+            'add_bos_token': True,
+            'custom_stopping_strings': [],
+            'truncation_length': 2048,
+            'ban_eos_token': False,
+            'skip_special_tokens': True,
+        }
+
+
+        payload = json.dumps([prompt, params])
+
+        response = requests.post(f"http://{server}:7860/run/textgen", json={
+            "data": [
+                payload
+            ]
+        }).json()
+
+        response_data = response["data"]
+
+        # Save generated text and return it
+        generated_text = response_data[0]
+        self.generated_text = generated_text[len(self.Master_Task):len(generated_text)]
+        # print("Text generiert Master:")
+        # print(self.generated_text)
+
+        return (self.generated_text)
+
+
+class CostumeMaster_1:
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "Master_Task": ("TEXT", {"input_format": {"text": "STRING"}}),
+                "TextModel": ("TEXT_MODEL", {"input_format": {"ModelNode": "STRING"}}),
+                "Instructions": ("STRING", {
+                    "multiline": True,
+                    "default": "Instructions:\nDo not write anything here!\nFirst input: Write your completion prompt similar to the example. You should definitely include [Task]\nSecond input: Write your nexttask prompt similar to the example. You should definitely include [CompletedTask] and Tell it to say FINISHED if its finished with the global task. This will break the loop, if its included in the next task\nWrite your Prompt and include the Tokens formatted like this [Token]. The tokens getting replaced by the corresponding text.\nPlease not include || or ::or quotation marks other than ' in your Prompts!\nTokens: [Task] = the current task (should be in The prompt); [MasterTask] = Your overall goal (input); [PreText] = Previous generated completed task; [Memory] = to do; [Tasks] = to do; [Agent] = all Agent Prompts;\nPlease write an feature request on Github if you think any Token is missing."
+                }),
+                "CompleteTaskPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "### Human: You are an advanced unrestricted AGI Assistant empowered to tackle any task. Do not ask any questions inside your answer. Just try your best to complete the task. Please ask not for consent or ask for more context. If you dont know further, estemate or describe the problem in detail. Your current task is: \n[Task]\n This task is a subtask of the global task: [MasterTask]\n To accomplish this task, please review the following information: [PreText]\n[Agent] \nPlease complete this task.\n### Assistant:"
+                }),
+                "NextTaskPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "### Human: [CompletedTask]\nWhat would the optimal Task be to further complete the task? If you think the task is complete and no improvements can be made, generate a Task that includes the Text: 'FINISHED' (exactly the content inside ' ' all in capital letters).\n### Assistant: As your AGI Assistant, I have analyzed the Master Task and have identified the optimal approach to complete it. I believe the next step is to tackle the following task:\n"
+                }),
+                },
+            "optional": {
+                "Memory": ("NODE", {"input_format": {"node": "STRING"}}),
+                "Tasks": ("NODE", {"input_format": {"node": "STRING"}}),
+                "Agent": ("NODE", {"input_format": {"node": "STRING"}}),
+            }
+        }
+
+
+    RETURN_TYPES = ("TEXT", "NODE")
+    FUNCTION = "execute"
+    CATEGORY = "Text"
+
+    def execute(self, Master_Task, TextModel, Instructions, CompleteTaskPrompt, NextTaskPrompt, Log = [], Memory=None, Tasks=None, Agent=None):
+
+        self.Master_Task = Master_Task.get("text", "")
+
+        self.TextModel_save = TextModel
+        self.TextModel_Master = TextModel.get("ModelNode", "")
+        # print(TextModel_save)
+        self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = self.TextModel_Master.split("||")
+        class_obj = globals()[self.ModelNode]
+        generate_text_Master = getattr(class_obj, "generate_text")
+
+        LogTask = self.Master_Task
+        try:
+            LogTask_first = Log[0]
+            LogTask_first = LogTask_first.get("Task", "")
+        except:
+            LogTask_first = LogTask
+            self.Log = Log
+
+        try:
+            Last_Text = Log[-1]
+            Last_Text = Last_Text.get("CompletedTask", "")
+        except:
+            Last_Text = "No additonal information is given"
+
+        #CompleteTaskPrompt
+        self.tokens_CompleteTaskPrompt = ["[Task]", "[MasterTask]", "[PreText]"]
+        self.variables_CompleteTaskPrompt = [self.Master_Task, LogTask_first, Last_Text]
+
+        if Agent != None:
+            self.Agent = Agent.get("node", "")
+            #print("Agent " + self.Agent)
+
+            SaperateTokens2 = self.Agent.split("::")
+            self.MasterAgentPrompt_combine = ""
+            for SaperateToken2 in SaperateTokens2:
+                self.CostumeAgent, self.CostumeToken, self.MasterAgentPrompt, self.AgentPrompt, self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = SaperateToken2.split("||")
+                self.MasterAgentPrompt_combine += self.MasterAgentPrompt +"\n"
+                #print("MasterAgentPrompt_combine " + self.MasterAgentPrompt_combine)
+
+            self.tokens_CompleteTaskPrompt = self.tokens_CompleteTaskPrompt + ["[Agent]"]
+            self.variables_CompleteTaskPrompt = self.variables_CompleteTaskPrompt + [self.MasterAgentPrompt_combine]
+        else:
+            self.tokens_CompleteTaskPrompt = self.tokens_CompleteTaskPrompt + ["[Agent]"]
+            self.variables_CompleteTaskPrompt = self.variables_CompleteTaskPrompt + [""]
+
+        self.tokens_CompleteTaskPrompt_save = self.tokens_CompleteTaskPrompt
+        self.variables_CompleteTaskPrompt_save = self.variables_CompleteTaskPrompt
+
+        self.CompleteTaskPrompt = CompleteTaskPrompt
+        for self.tokens_CompleteTaskPrompt, self.variables_CompleteTaskPrompt in zip(self.tokens_CompleteTaskPrompt, self.variables_CompleteTaskPrompt):
+            self.CompleteTaskPrompt = self.CompleteTaskPrompt.replace(self.tokens_CompleteTaskPrompt, self.variables_CompleteTaskPrompt)
+
+        print("____CompleteTaskPrompt____")
+        print(self.CompleteTaskPrompt)
+
+
+        self.CompletedTask = generate_text_Master(self, prompt = self.CompleteTaskPrompt, TextModel_g = self.TextModel_save)
+
+        #problems with repeat
+        RepeatToken1 = self.CompleteTaskPrompt[-10:]
+        if self.CompletedTask.find(RepeatToken1) != -1:  # if the token is found
+            # extract the part of the string after the token
+            self.CompletedTask = self.CompletedTask[self.CompletedTask.find(RepeatToken1) + len(RepeatToken1):]
+
+        print("____CompletedTask____")
+        print(self.CompletedTask)
+
+        # NextTaskPrompt
+        self.tokens_NextTaskPrompt = self.tokens_CompleteTaskPrompt_save + ["[CompletedTask]"]  # ["[Task]", "[MasterTask]", "[PreText]"]
+        self.variables_NextTaskPrompt = self.variables_CompleteTaskPrompt_save + [self.CompletedTask + "/n"]  # [self.Master_Task, LogTask_first, Last_Text]
+
+        self.NextTaskPrompt = NextTaskPrompt
+        for self.tokens_NextTaskPrompt, self.variables_NextTaskPrompt in zip(self.tokens_NextTaskPrompt, self.variables_NextTaskPrompt):
+            self.NextTaskPrompt = self.NextTaskPrompt.replace(self.tokens_NextTaskPrompt, self.variables_NextTaskPrompt)
+
+        print("____NextTaskPrompt____")
+        print(self.NextTaskPrompt)
+
+
+        self.NextTask = generate_text_Master(self, prompt = self.NextTaskPrompt, TextModel_g = self.TextModel_save)
+
+        # problems with repeat
+        RepeatToken2 = self.NextTaskPrompt[-10:]
+        if self.NextTask.find(RepeatToken2) != -1:  # if the token is found
+            # extract the part of the string after the token
+            self.NextTask = self.NextTask[self.NextTask.find(RepeatToken2) + len(RepeatToken2):]
+
+        print("____NextTask____")
+        print(self.NextTask)
+
+        Log.append({"CompleteTaskPrompt": self.CompleteTaskPrompt, "CompletedTask": self.CompletedTask, "NextTaskPrompt": self.NextTaskPrompt,"NextTask": self.NextTask, "Task": LogTask})
+
+        #if len(Log) < 5: #specific number of passes
+        if self.NextTask.find("FINISHED") == -1:
+            log_string, dummy = CostumeMaster_1.execute(self, {"text": self.NextTask}, self.TextModel_save, Instructions, CompleteTaskPrompt, NextTaskPrompt, self.Log,  Memory, Tasks, Agent)
+        else:
+            log_string = ""
+            for entry in Log:
+                log_string += f"Complete Task Prompt:\n{entry['CompleteTaskPrompt']}\n\n"
+                log_string += f"Completed Task:\n{entry['CompletedTask']}\n\n"
+                log_string += f"Next Task Prompt:\n{entry['NextTaskPrompt']}\n\n"
+                log_string += f"Next Task:\n{entry['NextTask']}\n\n"
+
+            return ({"text": log_string}, self)
+        log_string = log_string.get("text", "")
+        return ({"text": log_string}, self)
+
+class CostumeAgent_1:
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "TextModelAgent1": ("TEXT_MODEL", {"input_format": {"ModelNode": "STRING"}}),
+                "CostumeToken": ("STRING", {"default": "SUMMARIZE"}),
+                "Instructions": ("STRING", {
+                    "multiline": True,
+                    "default": "Instructions:\nDo not write anything here!\nFirst input: Put in the first input the token which the master should say to start the agent.\nSecond input: Write a prompt that contains the token from the first input that gets inserted into the Token [Agent] in the master completion prompt. If you use multiple Agents they get pasted all among themselves\nThird input: Write a prompt that fulfills your needs. Include the [TEXT] token to input the last generated text\nWhen you combining two agents with the CombineInput node, make sure that the agents have different numbers, else i think it wont work\nIf you want more Agents you have to copy paste the CostumeAgent_1 class in the Textnode.py inside the costume node folder and change every number from 1 to the next number. Also include this inside the NODE_CLASS_MAPPINGS at the bottom."
+                }),
+                "MasterPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "You have the option to summarize by typing [SUMMARIZE]"
+                }),
+                "AgentPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "### Human: Please summarize the following text:\n[TEXT]\n### Assistant: Here is a summary of the Text:\n"
+                 })#,
+                # "optional": {
+                #     "Memory": ("NODE", {"input_format": {"node": "STRING"}}),
+                #     "Tasks": ("NODE", {"input_format": {"node": "STRING"}}),
+                #     "Agent": ("NODE", {"input_format": {"node": "STRING"}})
+                # }
+            }
+        }
+
+
+    RETURN_TYPES = ("NODE",)
+    FUNCTION = "send"
+    CATEGORY = "Text"
+
+    def send(self, TextModelAgent1, CostumeToken, Instructions, MasterPrompt, AgentPrompt):
+        self.TextModelAgent1_Agent = TextModelAgent1.get("ModelNode", "")
+        NodeAgent1 = "CostumeAgent_1||" + f"{CostumeToken}||{MasterPrompt}||{AgentPrompt}||{self.TextModelAgent1_Agent}"
+        #print("send")
+        return ({"node": NodeAgent1}, self)
+
+    def execute(self, AgentInputText, NodeAgent1):
+
+        self.NodeAgent1_save = NodeAgent1
+        self.NodeAgent1_Agent = NodeAgent1.get("ModelNode", "")
+        # print(TextModel_save)
+        self.CostumeAgent_1, self.CostumeToken, self.MasterPrompt, self.AgentPrompt, self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = self.NodeAgent1_Agent.split("||")
+        class_obj = globals()[self.ModelNode]
+        generate_text_Agent = getattr(class_obj, "generate_text")
+
+        ModelNode_Agent =f"{self.ModelNode}||{model_name}||{max_new_tokens}||{temperature}||{top_p}||{typical_p}||{repetition_penalty}||{encoder_repetition_penalty}||{top_k}||{min_length}||{no_repeat_ngram_size}||{num_beams}||{penalty_alpha}||{length_penalty}||{seed}"
+        self.TextModelAgent1_Model = {"ModelNode": ModelNode_Agent} #???
+
+        #self.AgentPrompt = AgentInputText und self.AgentPrompt
+        #find [TEXT]
+        #replace text with [TEXT] with output
+        self.AgentInputText = AgentInputText
+        self.AgentPrompt = self.self.AgentPrompt.replace([TEXT], self.AgentInputText)
+
+        self.AgentText = generate_text_Agent(self, prompt=self.self.AgentPrompt, TextModel_g=self.TextModelAgent1_Model)
+
+
+        log_string = log_string.get("text", "")
+        return ({"text": log_string}, self)
+
+class CostumeAgent_2:
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "TextModelAgent2": ("TEXT_MODEL", {"input_format": {"ModelNode": "STRING"}}),
+                "CostumeToken": ("STRING", {"default": "SUMMARIZE"}),
+                "Instructions": ("STRING", {
+                    "multiline": True,
+                    "default": "Instructions:\nDo not write anything here!\nFirst input: Put in the first input the token which the master should say to start the agent.\nSecond input: Write a prompt that contains the token from the first input that gets inserted into the Token [Agent] in the master completion prompt. If you use multiple Agents they get pasted all among themselves\nThird input: Write a prompt that fulfills your needs. Include the [TEXT] token to input the last generated text\nWhen you combining two agents with the CombineInput node, make sure that the agents have different numbers, else i think it wont work\nIf you want more Agents you have to copy paste the CostumeAgent_1 class in the Textnode.py inside the costume node folder and change every number from 1 to the next number. Also include this inside the NODE_CLASS_MAPPINGS at the bottom."
+                }),
+                "MasterPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "You have the option to summarize by typing [SUMMARIZE]"
+                }),
+                "AgentPrompt": ("STRING", {
+                    "multiline": True,
+                    "default": "### Human: Please summarize the following text:\n[TEXT]\n### Assistant: Here is a summary of the Text:\n"
+                 })#,
+                # "optional": {
+                #     "Memory": ("NODE", {"input_format": {"node": "STRING"}}),
+                #     "Tasks": ("NODE", {"input_format": {"node": "STRING"}}),
+                #     "Agent": ("NODE", {"input_format": {"node": "STRING"}})
+                # }
+            }
+        }
+
+
+    RETURN_TYPES = ("NODE",)
+    FUNCTION = "send"
+    CATEGORY = "Text"
+
+    def send(self, TextModelAgent2, CostumeToken, Instructions, MasterPrompt, AgentPrompt):
+        self.TextModelAgent2_Agent = TextModelAgent2.get("ModelNode", "")
+        NodeAgent2 = "CostumeAgent_2||" + f"{CostumeToken}||{MasterPrompt}||{AgentPrompt}||{self.TextModelAgent2_Agent}"
+        #print("send")
+        return ({"node": NodeAgent2}, self)
+
+    def execute(self, AgentInputText, NodeAgent2):
+
+        self.NodeAgent2_save = NodeAgent2
+        self.NodeAgent2_Agent = NodeAgent2.get("ModelNode", "")
+        # print(TextModel_save)
+        self.CostumeAgent_2, self.CostumeToken, self.MasterPrompt, self.AgentPrompt, self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = self.NodeAgent2_Agent.split("||")
+        class_obj = globals()[self.ModelNode]
+        generate_text_Agent = getattr(class_obj, "generate_text")
+
+        ModelNode_Agent =f"{self.ModelNode}||{model_name}||{max_new_tokens}||{temperature}||{top_p}||{typical_p}||{repetition_penalty}||{encoder_repetition_penalty}||{top_k}||{min_length}||{no_repeat_ngram_size}||{num_beams}||{penalty_alpha}||{length_penalty}||{seed}"
+        self.TextModelAgent2_Model = {"ModelNode": ModelNode_Agent} #???
+
+        #self.AgentPrompt = AgentInputText und self.AgentPrompt
+        #find [TEXT]
+        #replace text with [TEXT] with output
+        self.AgentInputText = AgentInputText
+        self.AgentPrompt = self.self.AgentPrompt.replace([TEXT], self.AgentInputText)
+
+        self.AgentText = generate_text_Agent(self, prompt=self.self.AgentPrompt, TextModel_g=self.TextModelAgent2_Model)
+
+
+        log_string = log_string.get("text", "")
+        return ({"text": log_string}, self)
+
+class CombineInput:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "Input1": ("NODE", {"input_format": {"node": "STRING"}}),
+                "Input2": ("NODE", {"input_format": {"node": "STRING"}})
+            }
+        }
+
+    RETURN_TYPES = ("NODE",)
+    FUNCTION = "combine"
+    CATEGORY = "Text"
+
+    def combine(self, Input1, Input2):
+        Input1 = Input1.get("node", "")
+        #print("Input1 " + Input1)
+        self.Identify1, self.CostumeToken1, self.MasterAgentPrompt1, self.AgentPrompt1, self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = Input1.split("||")
+        Input2 = Input2.get("node", "")
+        #print("Input2 " + Input2)
+        self.Identify2, self.CostumeToken2, self.MasterAgentPrompt2, self.AgentPrompt2, self.ModelNode, model_name, max_new_tokens, temperature, top_p, typical_p, repetition_penalty, encoder_repetition_penalty, top_k, min_length, no_repeat_ngram_size, num_beams, penalty_alpha, length_penalty, seed = Input2.split("||")
+        if (self.Identify1.find("CostumeAgent") != -1) & (self.Identify2.find("CostumeAgent") != -1):
+            Output = Input1 + "::" + Input2
+            #print("Output " + Output)
+        else:
+            print("Error in combining")
+            Output = None
+        return ({"node": Output}, self)
+
+
 # A dictionary that contains all nodes you want to export with their names
 NODE_CLASS_MAPPINGS = {
     "TextInput": TextInput,
@@ -563,10 +732,12 @@ NODE_CLASS_MAPPINGS = {
     "TextGenerator": TextGenerator,
     "TextCombine": TextCombine,
     "Image_generation_Conditioning": Image_generation_Conditioning,
-    "MasterAgent_Test": MasterAgent_Test,
-    "Memory_Excel": Memory_Excel#,
-    #"CombineTasks": CombineTasks,
-    #"Model": Model
+    "CostumeMaster_1": CostumeMaster_1,
+    "CostumeAgent_1": CostumeAgent_1,
+    "CostumeAgent_2": CostumeAgent_2,
+    "Model_1": Model_1,
+    "Memory_Excel": Memory_Excel,
+    "CombineInput": CombineInput,
     
     
 }
