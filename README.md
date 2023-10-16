@@ -3,7 +3,13 @@ Implementation of AutoGen inside ComfyUI.
 
 This repository is under development, and not everything is functioning correctly yet.
 
+Dont share your workflow with any API keys inside!!!
+
 # Example of Agents 
+
+![Screenshot 2023-10-16 171331](https://github.com/xXAdonesXx/NodeGPT/assets/66518617/3f7aaef7-3525-4331-8445-82f5be719b60)
+
+
 ![Screenshot 2023-10-16 165601](https://github.com/xXAdonesXx/NodeGPT/assets/66518617/226498be-fd20-4db8-821f-40e3b22b09ec)
 The example above should work mostly after installation. The output is displayed in the terminal, and the workflow can be found in the repository (Task_Solving_with_Code_Generation.json).
 
