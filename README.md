@@ -28,6 +28,8 @@ This dont work yet with the local LLM (maybe with the OpenAI API)
 - Itteritive prompt enhancement using llava and Stable Diffusion https://github.com/JayZeeDesign/vision-agent-with-llava/blob/main/app.py
 
 # Installing
+Keep in mind that it's not fully functioning at the moment. I would recommend only installing it if you have some programming knowledge to get this running. (Edit: I just remembered that in some Python scripts, you have to enter your path to Autogen.)
+
 Install: https://github.com/comfyanonymous/ComfyUI
 
 Install: https://github.com/oobabooga/text-generation-webui
