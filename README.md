@@ -28,13 +28,15 @@ This dont work yet with the local LLM (maybe with the OpenAI API)
 - Itteritive prompt enhancement using llava and Stable Diffusion https://github.com/JayZeeDesign/vision-agent-with-llava/blob/main/app.py
 
 # Installing
-Keep in mind that it's not fully functioning at the moment. I would recommend only installing it if you have some programming knowledge to get this running. (Edit: I just remembered that in some Python scripts, you have to enter your path to Autogen.)
+Keep in mind that it's not fully functioning at the moment. I would recommend only installing it if you have some programming knowledge to get this running. (Edit: I just remembered that in some Python scripts, you may have to enter your path to Autogen.)
 
 Install: https://github.com/comfyanonymous/ComfyUI
 
 Install: https://github.com/oobabooga/text-generation-webui
 
 Git clone the repository: git clone https://github.com/xXAdonesXx/NodeGPT into the "custom nodes" folder inside ComfyUI
+
+pip install pyautogen
 
 Start the text generation web UI with the OpenAI extension
 
