@@ -1,5 +1,9 @@
-
 import sys
+import os
+base_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(base_dir)
+venv_site_packages = os.path.join(parent_dir, 'venv', 'Lib', 'site-packages')
+sys.path.append(venv_site_packages)
 import autogen
 
 class Executor:
