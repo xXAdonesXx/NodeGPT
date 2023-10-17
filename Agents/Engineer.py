@@ -1,6 +1,4 @@
 import sys
-sys.path.append("x:\\programme\\python\\lib\\site-packages")
-
 import autogen  # or whatever module inside pyautogen you wish to use
 
 class Engineer:
