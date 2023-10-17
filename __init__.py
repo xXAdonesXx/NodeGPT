@@ -21,7 +21,8 @@ node_list = [ #Add list of .py files containing nodes here
     "Agents.Scientist",
     "API_Nodes.LM_Studio",
     "TextGeneration",
-    "Conditioning"
+    "Conditioning",
+    "Output2String"
 ]
 
 NODE_CLASS_MAPPINGS = {}
