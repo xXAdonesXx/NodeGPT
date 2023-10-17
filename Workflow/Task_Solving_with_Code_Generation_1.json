@@ -1,0 +1,287 @@
+{
+  "last_node_id": 23,
+  "last_link_id": 31,
+  "nodes": [
+    {
+      "id": 23,
+      "type": "DisplayString",
+      "pos": [
+        1540,
+        361
+      ],
+      "size": {
+        "0": 210,
+        "1": 26
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "TEXT",
+          "link": 31
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DisplayString"
+      }
+    },
+    {
+      "id": 20,
+      "type": "Chat",
+      "pos": [
+        1092,
+        359
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "User",
+          "type": "User",
+          "link": 29
+        },
+        {
+          "name": "Agent",
+          "type": "Agent",
+          "link": 30
+        },
+        {
+          "name": "Task",
+          "type": "STRING",
+          "link": 26,
+          "widget": {
+            "name": "Task"
+          },
+          "slot_index": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "TEXT",
+          "type": "TEXT",
+          "links": [
+            31
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Chat"
+      },
+      "widgets_values": [
+        "Task here",
+        "Instructions:\nDo not write anything here!\nThe Below dosent work :)\nType below in the Input \nNEW for a new chat \nSEND to send a message if asked \nAsk if you have a follow up question",
+        "NEW"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "Assistant",
+      "pos": [
+        671,
+        452
+      ],
+      "size": {
+        "0": 315,
+        "1": 154
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "LLM",
+          "type": "LLM",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Agent",
+          "type": "Agent",
+          "links": [
+            30
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Assistant"
+      },
+      "widgets_values": [
+        "assistant",
+        "You are a helpful assistant",
+        "42",
+        "0",
+        120
+      ]
+    },
+    {
+      "id": 12,
+      "type": "PrimitiveNode",
+      "pos": [
+        671,
+        658
+      ],
+      "size": [
+        311.60919311523344,
+        108.07191711425708
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            26
+          ],
+          "slot_index": 0,
+          "widget": {
+            "name": "Task"
+          }
+        }
+      ],
+      "title": "Task",
+      "properties": {},
+      "widgets_values": [
+        "Task here"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LM_Studio",
+      "pos": [
+        274,
+        382
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "LLM",
+          "type": "LLM",
+          "links": [
+            28
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LM_Studio"
+      },
+      "widgets_values": [
+        "http://localhost:1234/v1",
+        "NULL"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "UserProxy",
+      "pos": [
+        667,
+        175
+      ],
+      "size": {
+        "0": 315,
+        "1": 226
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "LLM",
+          "type": "LLM",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "User",
+          "type": "User",
+          "links": [
+            29
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UserProxy"
+      },
+      "widgets_values": [
+        "User",
+        "TERMINATE",
+        "Reply TERMINATE if the task has been solved at full satisfaction. Otherwise, reply CONTINUE, or the reason why the task is not solved yet.",
+        "Reply TERMINATE if you are done",
+        "True",
+        "coding",
+        "10",
+        "TERMINATE"
+      ]
+    }
+  ],
+  "links": [
+    [
+      26,
+      12,
+      0,
+      20,
+      2,
+      "STRING"
+    ],
+    [
+      28,
+      3,
+      0,
+      22,
+      0,
+      "LLM"
+    ],
+    [
+      29,
+      21,
+      0,
+      20,
+      0,
+      "User"
+    ],
+    [
+      30,
+      22,
+      0,
+      20,
+      1,
+      "Agent"
+    ],
+    [
+      31,
+      20,
+      0,
+      23,
+      0,
+      "TEXT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
