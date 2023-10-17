@@ -1,7 +1,5 @@
 
 import sys
-sys.path.append("x:\\programme\\python\\lib\\site-packages")
-
 import autogen
 
 class Executor:
