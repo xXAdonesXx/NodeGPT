@@ -1,6 +1,4 @@
 import sys
-sys.path.append("x:\\programme\\python\\lib\\site-packages")
-
 from autogen import oai
 
 class TextGeneration:
