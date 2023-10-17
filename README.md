@@ -13,8 +13,8 @@ Dont share your workflow with any API keys inside!!!
 ![Screenshot 2023-10-16 165601](https://github.com/xXAdonesXx/NodeGPT/assets/66518617/226498be-fd20-4db8-821f-40e3b22b09ec)
 The example above should work mostly after installation. The output is displayed in the terminal, and the workflow can be found in the repository (Task_Solving_with_Code_Generation.json).
 
+
 ![Screenshot 2023-10-16 165434](https://github.com/xXAdonesXx/NodeGPT/assets/66518617/9b694d65-f890-415d-9075-9d1bcbd92b12)
-This dont work yet with the local LLM (maybe with the OpenAI API)
 
 
 # Features
@@ -22,30 +22,39 @@ This dont work yet with the local LLM (maybe with the OpenAI API)
   
 - Automated Task Solving with Code Generation, Execution & Debugging
 
-- Automated Complex Task Solving by Group Chat (Somehow doesn't work quite yet)
+- Automated Complex Task Solving by Group Chat
 
-# Possible Features
+# To Do
 - Itteritive prompt enhancement using llava and Stable Diffusion https://github.com/JayZeeDesign/vision-agent-with-llava/blob/main/app.py
 
+- Functions
+
 # Installing
-Keep in mind that it's not fully functioning at the moment. I would recommend only installing it if you have some programming knowledge to get this running. (Edit: I just remembered that in some Python scripts, you may have to enter your path to Autogen.)
+please let me now if you have any issus installing.
 
 Install: https://github.com/comfyanonymous/ComfyUI
 
-Install: https://github.com/oobabooga/text-generation-webui
+I would recomend using LM Studio: https://lmstudio.ai/
 
 Git clone the repository: git clone https://github.com/xXAdonesXx/NodeGPT into the "custom nodes" folder inside ComfyUI
 
-pip install pyautogen
+cd NodeGPT
 
-Start the text generation web UI with the OpenAI extension
+install.bat
 
-Start ComfUI to place nodes and enjoy
+pip install -r requirements.txt
+
+# Usage
+Start the LM Studio Server
+
+Start ComfUI and place nodes.
 
 # Contributing
 Pull requests, suggestions, and issue reports are welcome.
 
 # Credits
+LM Studio
+
 ComfyUI: https://github.com/comfyanonymous/ComfyUI
 
 oobabooga: https://github.com/oobabooga/text-generation-webui
