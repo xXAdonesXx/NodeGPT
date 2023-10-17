@@ -11,7 +11,7 @@ class AppendAgent:
 
     RETURN_TYPES = ("Agent",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/Agents"
 
     def execute(self,  Agent1, Agent2):
         Agents = []

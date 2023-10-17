@@ -17,7 +17,10 @@ node_list = [ #Add list of .py files containing nodes here
     "Agents.Planner",
     "Agents.Executor",
     "Agents.Critic",
-    "Agents.Scientist"
+    "Agents.Scientist",
+    "API_Nodes.LM_Studio",
+    "TextGeneration",
+    "Conditioning"
 ]
 
 NODE_CLASS_MAPPINGS = {}

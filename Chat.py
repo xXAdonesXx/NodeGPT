@@ -2,6 +2,7 @@ import sys
 sys.path.append("x:\\programme\\python\\lib\\site-packages")
 
 import autogen  # or whatever module inside pyautogen you wish to use
+import json
 
 
 class Chat:
@@ -40,13 +41,26 @@ class Chat:
                 message=Task,
             )
         else:
-            print(agent_object)
             user_object.initiate_chat(
                 agent_object,
                 message=Task,
             )
 
-        return ({"TEXT": conversations},)
+            # Check if the first key of the dictionary is a string representation of a list
+            if isinstance(list(conversations.keys())[0], str):
+                # Convert the string representation to an actual list
+                content_list_str = list(conversations.keys())[0]
+                content_list = json.loads(content_list_str)
+            else:
+                raise ValueError("Unexpected format of 'text'")
+
+            # Extract the content from each dictionary in the list
+            all_contents = [item['content'] for item in content_list if 'content' in item]
+
+            # Get the last content from the list (or None if the list is empty)
+            last_content = all_contents[-1] if all_contents else None
+
+        return ({"TEXT": last_content, "LOG": conversations},)
 
 
 

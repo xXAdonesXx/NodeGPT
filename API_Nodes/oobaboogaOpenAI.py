@@ -13,7 +13,7 @@ class oobaboogaOpenAI:
 
     RETURN_TYPES = ("LLM",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/LLM"
 
     def execute(self, model, api_key, api_type, api_base, api_version):
         config_list = [

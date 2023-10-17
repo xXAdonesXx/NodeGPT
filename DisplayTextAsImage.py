@@ -27,7 +27,7 @@ class DisplayTextAsImage:
 
     def display_text_as_image(self, text):
 
-        text = text['TEXT']
+        text = text['LOG']
 
         # Check if the first key of the dictionary is a string representation of a list
         if isinstance(list(text.keys())[0], str):

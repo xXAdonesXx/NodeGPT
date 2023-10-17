@@ -10,7 +10,7 @@ class ChatGPT:
 
     RETURN_TYPES = ("LLM",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/LLM"
 
     def execute(self, Model, API_Key):
 

@@ -10,7 +10,7 @@ class Assistant:
             "required": {
                 "LLM": ("LLM",),
                 "name": ("STRING", {"default": "assistant"}),
-                "system_message": ("STRING", {"default": ""})
+                "system_message": ("STRING", {"default": "You are a helpful assistant"})
             },
             "optional": {
                 "Seed": ("INT", {"default": "42"}),
@@ -21,7 +21,7 @@ class Assistant:
 
     RETURN_TYPES = ("Agent",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/Agents"
 
     def execute(self, LLM, name, system_message, Seed, Temp, request_timeout):
         # create an AssistantAgent named "assistant"

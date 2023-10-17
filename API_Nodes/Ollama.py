@@ -14,7 +14,7 @@ class Ollama:
 
     RETURN_TYPES = ("LLM",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/LLM"
 
     def execute(self, model, api_type, api_base):
         config_list = [

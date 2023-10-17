@@ -20,7 +20,7 @@ class Executor:
 
     RETURN_TYPES = ("Agent",)
     FUNCTION = "execute"
-    CATEGORY = "AutoGen"
+    CATEGORY = "AutoGen/Agents"
 
     def execute(self, LLM, Seed, Temp, request_timeout):
         # create an AssistantAgent named "executor"

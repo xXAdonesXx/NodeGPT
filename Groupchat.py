@@ -50,14 +50,14 @@ class GroupChat:
 
         groupchat = autogen.GroupChat(agents=Agents, messages=[],
                                       max_round=max_round)
-        llm_config = {
+
+        manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={ #THIS has to be HERE for some reason??!!?!
                          "seed": Seed,  # seed for caching and reproducibility
                          "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                          "temperature": Temp,  # temperature for sampling
                          "request_timeout": request_timeout,
                      },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
-
-        manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+        )
 
         return ({"Agent": manager},)
 

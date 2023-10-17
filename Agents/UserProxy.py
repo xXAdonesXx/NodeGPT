@@ -11,12 +11,17 @@ class UserProxy:
         return {
             "required": {
                 "name": ("STRING", {"default": "User"}),
-                "human_input_mode": ("STRING", {"default": ""}),
-                "system_message": ("STRING", {"default": "ALWAYS"}),
+                "human_input_mode": ("STRING", {"default": "TERMINATE"}),
+                "system_message": ("STRING", {"default": "Reply TERMINATE if the task has been solved at full satisfaction. Otherwise, reply CONTINUE, or the reason why the task is not solved yet."}),
+                "default_auto_reply": ("STRING", {"default": "Reply TERMINATE if you are done"}),
                 "code_execution": ("STRING", {"default": "True"}),
                 "code_execution_dir": ("STRING", {"default": "coding"}),
                 "MaxConsecutiveAutoReply": ("INT", {"default": "10"}),
                 "Terminate_Token": ("STRING", {"default": "TERMINATE"})
+            },
+            "optional": {
+                "LLM": ("LLM",),
+
             }
         }
 
@@ -24,7 +29,7 @@ class UserProxy:
     FUNCTION = "execute"
     CATEGORY = "AutoGen"
 
-    def execute(self, name, human_input_mode, system_message, code_execution, code_execution_dir, MaxConsecutiveAutoReply, Terminate_Token):
+    def execute(self, name, human_input_mode, system_message, code_execution, code_execution_dir, MaxConsecutiveAutoReply, Terminate_Token, default_auto_reply, LLM=None):
         # create an AssistantAgent named "assistant"
         if code_execution=="True":
             code_execution_config = {
@@ -33,15 +38,33 @@ class UserProxy:
             }
         else:
             code_execution_config = False
+        if LLM==None:
+            user_proxy = autogen.UserProxyAgent(
+                name=name,
+                human_input_mode=human_input_mode,
+                system_message=system_message,
+                max_consecutive_auto_reply=MaxConsecutiveAutoReply,
+                is_termination_msg=lambda x: x.get("content", "").rstrip().endswith(Terminate_Token),
+                code_execution_config=code_execution_config,
+                default_auto_reply=default_auto_reply,
+            )
+        else:
+            user_proxy = autogen.UserProxyAgent(
+                name=name,
+                human_input_mode=human_input_mode,
+                system_message=system_message,
+                max_consecutive_auto_reply=MaxConsecutiveAutoReply,
+                is_termination_msg=lambda x: x.get("content", "").rstrip().endswith(Terminate_Token),
+                code_execution_config=code_execution_config,
+                default_auto_reply=default_auto_reply,
+                llm_config={
+                "seed": 42,  # seed for caching and reproducibility
+                "config_list": LLM['LLM'],  # a list of OpenAI API configurations
+                "temperature": 0,  # temperature for sampling
+                "request_timeout": 120,
+                },
+            )
 
-        user_proxy = autogen.UserProxyAgent(
-            name=name,
-            human_input_mode=human_input_mode,
-            system_message=system_message,
-            max_consecutive_auto_reply=MaxConsecutiveAutoReply,
-            is_termination_msg=lambda x: x.get("content", "").rstrip().endswith(Terminate_Token),
-            code_execution_config=code_execution_config
-        )
 
         return ({"User": user_proxy},)
 

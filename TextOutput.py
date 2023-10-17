@@ -30,7 +30,7 @@ class TextOutput:
         self.output_dir = output_dir
         self.type = "output"
         self.text = ""
-        self.text = dict_to_string(Output_Text['TEXT'])
+        self.text = dict_to_string(Output_Text['LOG'])
 
         full_output_folder = os.path.join(self.output_dir, "TextOutput")
 
