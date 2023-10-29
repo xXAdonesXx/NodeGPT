@@ -22,7 +22,8 @@ node_list = [ #Add list of .py files containing nodes here
     "API_Nodes.LM_Studio",
     "TextGeneration",
     "Conditioning",
-    "Output2String"
+    "Output2String",
+    "LoadAPIconfig"
 ]
 
 NODE_CLASS_MAPPINGS = {}
