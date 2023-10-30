@@ -1,25 +1,31 @@
 import importlib
 import os
 
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
-node_list = [ #Add list of .py files containing nodes here
-    "API_Nodes.ChatGPT",
-    "Agents.Assistant",
-    "Agents.UserProxy",
+def get_module_list_from_directory(directory):
+    directory_path = os.path.join(base_dir, directory)  # Verwende base_dir, um den vollen Pfad zum Verzeichnis zu erhalten
+    files = os.listdir(directory_path)
+    module_list = []
+
+    for file in files:
+        # Überprüft, ob die Datei eine .py-Datei ist und nicht __init__.py ist
+        if file.endswith('.py') and file != "__init__.py":
+            module_name = file[:-3]  # Entfernt .py am Ende
+            module_list.append(f"{directory}.{module_name}")
+
+    return module_list
+
+node_list = get_module_list_from_directory("API_Nodes") + get_module_list_from_directory("Agents")
+
+
+
+node_list += [
     "Chat",
     "TextOutput",
-    "API_Nodes.oobaboogaOpenAI",
-    "API_Nodes.Ollama",
     "DisplayText",
     "DisplayTextAsImage",
-    "Agents.Engineer",
     "Groupchat",
-    "Agents.AppendAgent",
-    "Agents.Planner",
-    "Agents.Executor",
-    "Agents.Critic",
-    "Agents.Scientist",
-    "API_Nodes.LM_Studio",
     "TextGeneration",
     "Conditioning",
     "Output2String",
