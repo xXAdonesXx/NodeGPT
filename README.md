@@ -29,6 +29,8 @@ The example above should work mostly after installation. The output is displayed
 
 - Functions
 
+- MemGPT (NotWorkingFolder)
+
 # Installing
 please let me now if you have any issus installing.
 
