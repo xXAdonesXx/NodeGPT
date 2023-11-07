@@ -24,7 +24,7 @@ class Output2String:
         print("------------------------------------------------")
         print(text)
 
-        return text
+        return(text,);
 
 NODE_CLASS_MAPPINGS = {
     "Output2String": Output2String,
