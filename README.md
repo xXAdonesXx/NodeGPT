@@ -23,9 +23,10 @@ The example above should work mostly after installation. The output is displayed
 - Automated Task Solving with Code Generation, Execution & Debugging
 
 - Automated Complex Task Solving by Group Chat
+  
+- New: llama-cpp (slow), llava
 
 # To Do
-- Itteritive prompt enhancement using llava and Stable Diffusion https://github.com/JayZeeDesign/vision-agent-with-llava/blob/main/app.py
 
 - Functions
 
@@ -50,6 +51,10 @@ pip install -r requirements.txt
 Start the LM Studio Server
 
 Start ComfUI and place nodes.
+
+For llava:
+
+https://huggingface.co/mys/ggml_llava-v1.5-7b
 
 # Contributing
 Pull requests, suggestions, and issue reports are welcome.
