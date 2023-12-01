@@ -25,7 +25,7 @@ class Ollama:
 
             }
         ]
-        return ({"LLM": config_list},)
+        return ({"LLM": config_list, "llama-cpp": False},)
 
 NODE_CLASS_MAPPINGS = {
     "Ollama": Ollama,

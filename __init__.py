@@ -29,7 +29,9 @@ node_list += [
     "TextGeneration",
     "Conditioning",
     "Output2String",
-    "LoadAPIconfig"
+    "LoadAPIconfig",
+    "LoadTXT",
+    "llava"
 ]
 
 NODE_CLASS_MAPPINGS = {}

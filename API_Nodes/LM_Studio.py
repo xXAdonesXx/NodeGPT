@@ -22,7 +22,7 @@ class LM_Studio:
 
             }
         ]
-        return ({"LLM": config_list},)
+        return ({"LLM": config_list, "llama-cpp": False},)
 
 NODE_CLASS_MAPPINGS = {
     "LM_Studio": LM_Studio,

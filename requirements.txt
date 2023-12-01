@@ -1,2 +1,4 @@
 pyautogen
 pymemgpt
+llama-cpp-python
+Pillow

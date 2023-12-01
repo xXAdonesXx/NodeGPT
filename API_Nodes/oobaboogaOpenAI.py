@@ -26,7 +26,7 @@ class oobaboogaOpenAI:
 
             }
         ]
-        return ({"LLM": config_list},)
+        return ({"LLM": config_list, "llama-cpp": False},)
 
 NODE_CLASS_MAPPINGS = {
     "oobaboogaOpenAI": oobaboogaOpenAI,
