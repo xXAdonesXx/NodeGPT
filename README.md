@@ -41,11 +41,10 @@ I would recomend using LM Studio: https://lmstudio.ai/
 
 Git clone the repository: git clone https://github.com/xXAdonesXx/NodeGPT into the "custom nodes" folder inside ComfyUI
 
-cd NodeGPT
+Run the Update.bat inside ComfyUI\custom_nodes\NodeGPT
 
-install.bat
-
-pip install -r requirements.txt
+# Troubleshooting
+Try running the Update.bat inside ComfyUI\custom_nodes\NodeGPT
 
 # Usage
 Start the LM Studio Server
