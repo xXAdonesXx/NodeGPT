@@ -15,11 +15,8 @@ class LM_Studio:
     def execute(self, api_base, api_key):
         config_list = [
             {
-                'model': "Test",
                 'api_key': api_key,
-                'api_type': 'open_ai',
-                'api_base': api_base,
-
+                'base_url': api_base,
             }
         ]
         return ({"LLM": config_list, "llama-cpp": False},)

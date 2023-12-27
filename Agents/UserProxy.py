@@ -78,7 +78,7 @@ class UserProxy:
                 "seed": 42,  # seed for caching and reproducibility
                 "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                 "temperature": 0,  # temperature for sampling
-                "request_timeout": 120,
+                "timeout": 120,
                 },
             )
 

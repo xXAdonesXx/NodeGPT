@@ -70,7 +70,7 @@ class GroupChat:
                          "seed": Seed,  # seed for caching and reproducibility
                          "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                          "temperature": Temp,  # temperature for sampling
-                         "request_timeout": request_timeout,
+                         "timeout": request_timeout,
                      },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
         )
 
