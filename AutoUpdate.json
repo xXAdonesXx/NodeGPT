@@ -1,5 +1,5 @@
 {
     "_comment": "This will slow down the startup",
     "AutoUpdate": false,
-    "first_installation": false
+    "first_installation": true
 }
