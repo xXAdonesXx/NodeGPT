@@ -47,7 +47,7 @@ class Scientist:
                 "seed": Seed,
                 "config_list": LLM['LLM'],
                 "temperature": Temp,
-                "request_timeout": request_timeout,
+                "timeout": request_timeout,
             },
         )
         return ({"Agent": scientist},)

@@ -50,7 +50,7 @@ class Chat:
         agent_object = Agent['Agent']
         print(agent_object)
         conversations = {}
-        autogen.ChatCompletion.start_logging(conversations)
+        # autogen.ChatCompletion.start_logging(conversations)
         if Input=="SEND":
             user_object.send(
                 recipient=agent_object,
