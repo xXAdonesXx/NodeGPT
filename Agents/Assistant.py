@@ -31,9 +31,9 @@ class Assistant:
                 "system_message": ("STRING", {"default": "You are a helpful assistant"})
             },
             "optional": {
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -41,16 +41,16 @@ class Assistant:
     FUNCTION = "execute"
     CATEGORY = "AutoGen/Agents"
 
-    def execute(self, LLM, name, system_message, Seed, Temp, request_timeout):
+    def execute(self, LLM, name, system_message, cache_seed, Temp, timeout):
         # create an AssistantAgent named "assistant"
         assistant = autogen.AssistantAgent(
             name=name,
             system_message=system_message,
             llm_config={
-                "seed": Seed,  # seed for caching and reproducibility
+                "cache_seed": cache_seed,  # cache_seed for caching and reproducibility
                 "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                 "temperature": Temp,  # temperature for sampling
-                "timeout": request_timeout,
+                "timeout": timeout,
             },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
         )
         return ({"Agent": assistant},)

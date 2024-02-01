@@ -28,9 +28,9 @@ class Executor:
                 "LLM": ("LLM",)
             },
             "optional": {
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -38,7 +38,7 @@ class Executor:
     FUNCTION = "execute"
     CATEGORY = "AutoGen/Agents"
 
-    def execute(self, LLM, Seed, Temp, request_timeout):
+    def execute(self, LLM, cache_seed, Temp, timeout):
         # create an AssistantAgent named "executor"
         executor = autogen.AssistantAgent(
             name="Executor",
@@ -46,10 +46,10 @@ class Executor:
             human_input_mode="NEVER",
             code_execution_config={"last_n_messages": 3, "work_dir": "coding"},
             llm_config={
-                "seed": Seed,
+                "cache_seed": cache_seed,
                 "config_list": LLM['LLM'],
                 "temperature": Temp,
-                "timeout": request_timeout,
+                "timeout": timeout,
             },
         )
         return ({"Agent": executor},)

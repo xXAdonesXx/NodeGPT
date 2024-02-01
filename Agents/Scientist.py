@@ -28,9 +28,9 @@ class Scientist:
                 "LLM": ("LLM",)
             },
             "optional": {
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -38,16 +38,16 @@ class Scientist:
     FUNCTION = "execute"
     CATEGORY = "AutoGen/Agents"
 
-    def execute(self, LLM, Seed, Temp, request_timeout):
+    def execute(self, LLM, cache_seed, Temp, timeout):
         # create an AssistantAgent named "scientist"
         scientist = autogen.AssistantAgent(
             name="Scientist",
             system_message='''Scientist. You follow an approved plan. You are able to categorize papers after seeing their abstracts printed. You don't write code.''',
             llm_config={
-                "seed": Seed,
+                "cache_seed": cache_seed,
                 "config_list": LLM['LLM'],
                 "temperature": Temp,
-                "timeout": request_timeout,
+                "timeout": timeout,
             },
         )
         return ({"Agent": scientist},)

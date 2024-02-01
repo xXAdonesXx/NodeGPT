@@ -29,9 +29,9 @@ class Planner:
                 "LLM": ("LLM",)
             },
             "optional": {
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -39,7 +39,7 @@ class Planner:
     FUNCTION = "execute"
     CATEGORY = "AutoGen/Agents"
 
-    def execute(self, LLM, Seed, Temp, request_timeout):
+    def execute(self, LLM, cache_seed, Temp, timeout):
         # create an AssistantAgent named "assistant"
         assistant = autogen.AssistantAgent(
             name="Planner",
@@ -48,10 +48,10 @@ class Planner:
             Explain the plan first. Be clear which step is performed by an engineer, and which step is performed by a scientist.
             ''',
             llm_config={
-                "seed": Seed,  # seed for caching and reproducibility
+                "cache_seed": cache_seed,  # cache_seed for caching and reproducibility
                 "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                 "temperature": Temp,  # temperature for sampling
-                "timeout": request_timeout,
+                "timeout": timeout,
             },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
         )
         return ({"Agent": assistant},)

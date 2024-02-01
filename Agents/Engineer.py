@@ -28,9 +28,9 @@ class Engineer:
                 "LLM": ("LLM",)
             },
             "optional": {
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -38,7 +38,7 @@ class Engineer:
     FUNCTION = "execute"
     CATEGORY = "AutoGen/Agents"
 
-    def execute(self, LLM, Seed, Temp, request_timeout):
+    def execute(self, LLM, cache_seed, Temp,timeout):
         # create an AssistantAgent named "assistant"
         assistant = autogen.AssistantAgent(
             name="Engineer",
@@ -47,10 +47,10 @@ class Engineer:
             If the result indicates there is an error, fix the error and output the code again. Suggest the full code instead of partial code or code changes. If the error can't be fixed or if the task is not solved even after the code is executed successfully, analyze the problem, revisit your assumption, collect additional info you need, and think of a different approach to try.
             ''',
             llm_config={
-                "seed": Seed,  # seed for caching and reproducibility
+                "cache_seed": cache_seed,  # seed for caching and reproducibility
                 "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                 "temperature": Temp,  # temperature for sampling
-                "timeout": request_timeout,
+                "timeout": timeout,
             },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
         )
         return ({"Agent": assistant},)

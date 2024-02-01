@@ -75,7 +75,7 @@ class UserProxy:
                 code_execution_config=code_execution_config,
                 default_auto_reply=default_auto_reply,
                 llm_config={
-                "seed": 42,  # seed for caching and reproducibility
+                "cache_seed": 42,  # seed for caching and reproducibility "seed": 42,
                 "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                 "temperature": 0,  # temperature for sampling
                 "timeout": 120,

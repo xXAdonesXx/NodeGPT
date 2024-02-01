@@ -35,9 +35,9 @@ class GroupChat:
                 "Agent4": ("Agent",),
                 "Agent5": ("Agent",),
                 "max_round": ("INT", {"default": 50}),
-                "Seed": ("INT", {"default": "42"}),
+                "cache_seed": ("INT", {"default": "42"}),
                 "Temp": ("INT", {"default": "0"}),
-                "request_timeout": ("INT", {"default": 120})
+                "timeout": ("INT", {"default": 120})
             }
         }
 
@@ -45,7 +45,7 @@ class GroupChat:
     FUNCTION = "execute"
     CATEGORY = "AutoGen"
 
-    def execute(self, LLM, User,  Agent, Agent2, Seed, Temp, request_timeout, Agent3=None, Agent4=None, Agent5=None, max_round=50):
+    def execute(self, LLM, User,  Agent, Agent2, cache_seed, Temp, timeout, Agent3=None, Agent4=None, Agent5=None, max_round=50):
         Agents = [User['User']]
 
         # Function to handle agent input
@@ -66,11 +66,12 @@ class GroupChat:
         groupchat = autogen.GroupChat(agents=Agents, messages=[],
                                       max_round=max_round)
 
+
         manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={ #THIS has to be HERE for some reason??!!?!
-                         "seed": Seed,  # seed for caching and reproducibility
+                         "cache_seed": cache_seed,  # seed for caching and reproducibility
                          "config_list": LLM['LLM'],  # a list of OpenAI API configurations
                          "temperature": Temp,  # temperature for sampling
-                         "timeout": request_timeout,
+                         "timeout": timeout,
                      },  # configuration for autogen's enhanced inference API which is compatible with OpenAI API
         )
 

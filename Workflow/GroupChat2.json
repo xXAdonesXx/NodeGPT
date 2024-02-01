@@ -1,0 +1,189 @@
+{
+  "3": {
+    "inputs": {
+      "api_base": "http://localhost:1234/v1",
+      "api_key": "NULL"
+    },
+    "class_type": "LM_Studio",
+    "_meta": {
+      "title": "LM Studio"
+    }
+  },
+  "20": {
+    "inputs": {
+      "Task": "undefined",
+      "Instructions": "Instructions:\nDo not write anything here!\nThe Below dosent work :)\nType below in the Input \nNEW for a new chat \nSEND to send a message if asked \nAsk if you have a follow up question",
+      "Input": "NEW"
+    },
+    "class_type": "Chat",
+    "_meta": {
+      "title": "Chat"
+    }
+  },
+  "21": {
+    "inputs": {
+      "name": "Admin",
+      "human_input_mode": "TERMINATE",
+      "system_message": "A human admin. Interact with the planner to discuss the plan. Plan execution needs to be approved by this admin.",
+      "default_auto_reply": "Reply TERMINATE if you are done",
+      "code_execution": "FALSE",
+      "code_execution_dir": "coding",
+      "MaxConsecutiveAutoReply": "10",
+      "Terminate_Token": "TERMINATE",
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "UserProxy",
+    "_meta": {
+      "title": "UserProxy"
+    }
+  },
+  "23": {
+    "inputs": {
+      "text": [
+        "32",
+        0
+      ]
+    },
+    "class_type": "DisplayString",
+    "_meta": {
+      "title": "DisplayText"
+    }
+  },
+  "24": {
+    "inputs": {
+      "max_round": 50,
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ],
+      "User": [
+        "21",
+        0
+      ],
+      "Agent": [
+        "29",
+        0
+      ],
+      "Agent2": [
+        "30",
+        0
+      ],
+      "Agent3": [
+        "25",
+        0
+      ],
+      "Agent4": [
+        "28",
+        0
+      ],
+      "Agent5": [
+        "27",
+        0
+      ]
+    },
+    "class_type": "GroupChat",
+    "_meta": {
+      "title": "GroupChat with Manager"
+    }
+  },
+  "25": {
+    "inputs": {
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Engineer",
+    "_meta": {
+      "title": "Engineer"
+    }
+  },
+  "27": {
+    "inputs": {
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Executor",
+    "_meta": {
+      "title": "Executor"
+    }
+  },
+  "28": {
+    "inputs": {
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Scientist",
+    "_meta": {
+      "title": "Scientist"
+    }
+  },
+  "29": {
+    "inputs": {
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Planner",
+    "_meta": {
+      "title": "Planner"
+    }
+  },
+  "30": {
+    "inputs": {
+      "cache_seed": "42",
+      "Temp": "0",
+      "timeout": 120,
+      "LLM": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Critic",
+    "_meta": {
+      "title": "Critic"
+    }
+  },
+  "32": {
+    "inputs": {
+      "Task": "How far is the moon from the Earth",
+      "Instructions": "Instructions:\nDo not write anything here!\nType below in the Input \nNEW for a new chat \nSEND to send a message if asked \nAsk if you have a follow up question",
+      "Input": "SEND",
+      "User": [
+        "21",
+        0
+      ],
+      "Agent": [
+        "24",
+        0
+      ]
+    },
+    "class_type": "Chat",
+    "_meta": {
+      "title": "Chat"
+    }
+  }
+}
