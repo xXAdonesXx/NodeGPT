@@ -1,0 +1,15 @@
+[project]
+name = "nodegpt"
+description = "Implementation of AutoGen inside ComfyUI. This repository is under development, and not everything is functioning correctly yet."
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["pyautogen>0.2", "pymemgpt", "llama-cpp-python", "Pillow<10", "websockets<12.0"]
+
+[project.urls]
+Repository = "https://github.com/xXAdonesXx/NodeGPT"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "NodeGPT"
+Icon = ""
